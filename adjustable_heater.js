@@ -12,17 +12,15 @@ elements.adjustable_heater = {
     hardness: 1,
     
     properties: {
-        targetTemp: null
+        targetTemp: 100,
+        tempSet: false
     },
     
     tick: function(pixel) {
-        if (pixel.targetTemp === null) {
+        if (!pixel.tempSet) {
             var input = prompt("Enter target temperature (\u00B0C) for this heater:", "100");
-            if (input === null || input === "") {
-                pixel.targetTemp = 100;
-            } else {
-                pixel.targetTemp = parseFloat(input);
-            }
+            pixel.targetTemp = (input === null || input === "") ? 100 : parseFloat(input);
+            pixel.tempSet = true;
         }
         
         for (var i = 0; i < adjacentCoords.length; i++) {
@@ -43,9 +41,6 @@ elements.adjustable_heater = {
     },
     
     hoverStat: function(pixel) {
-        if (pixel.targetTemp === null) {
-            return "Target: not set";
-        }
         return "Target: " + pixel.targetTemp + "\u00B0C";
     }
 };
